@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Hotel Management</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://cdn.pixabay.com/photo/2017/08/06/08/06/money-2590654_960_720.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .payment-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 400px;
+            text-align: center;
+        }
+        h2 {
+            color: #ff5e62;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+        select, input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        select, input {
+            background: #f9f9f9;
+        }
+        button {
+            background: linear-gradient(45deg, #ff5e62, #ff9966);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #ff3b3f, #ff7f50);
+        }
+        .cashback-msg {
+            color: green;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .success-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .tick-mark {
+            font-size: 60px;
+            color: green;
+            display: none;
+        }
+        .success-msg {
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h2>Complete Your Payment</h2>
+        <label for="amount">Amount to Pay:</label>
+        <input type="text" id="amount" value="$150" readonly>
+
+        <label for="payment-method">Select Payment Method:</label>
+        <select id="payment-method">
+            <option value="credit-card">Credit/Debit Card</option>
+            <option value="upi">UPI (Google Pay, PhonePe, Paytm UPI)</option>
+            <option value="gpay">Google Pay</option>
+            <option value="paytm">Paytm Wallet</option>
+            <option value="net-banking">Net Banking</option>
+            <option value="wallets">Other Wallets</option>
+        </select>
+
+        <label for="payment-details">Enter Payment Details:</label>
+        <input type="text" id="payment-details" placeholder="Card Number / UPI ID / Mobile Number">
+
+        <button onclick="makePayment()">Pay Now</button>
+
+        <div class="cashback-msg">🎉 You will receive $10 cashback after payment!</div>
+
+        <!-- Success Message Section -->
+        <div class="success-container" id="success-container">
+            <div class="tick-mark" id="tick-mark">✔</div>
+            <div class="success-msg" id="success-msg">✅ Payment Successful! Booking Confirmed 🎊</div>
+        </div>
+    </div>
+
+    <script>
+        function makePayment() {
+            let paymentMethod = document.getElementById('payment-method').value;
+            let paymentDetails = document.getElementById('payment-details').value;
+
+            if (paymentDetails.trim() === "") {
+                alert("Please enter valid payment details!");
+                return;
+            }
+
+            // Simulate payment processing
+            setTimeout(() => {
+                document.getElementById('success-container').style.display = 'block';
+                document.getElementById('tick-mark').style.display = 'block';
+                document.getElementById('success-msg').style.display = 'block';
+
+                // Speak payment confirmation
+                let speech = new SpeechSynthesisUtterance("Payment Successful! You have received a ten dollar cashback. Thank you for your payment.");
+                speech.lang = "en-US";
+                window.speechSynthesis.speak(speech);
+
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = "index.html";  // Redirect to homepage after payment
+                }, 3000);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

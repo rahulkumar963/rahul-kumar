@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Dashboard</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            display: flex;
+        }
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            color: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        }
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+        .services-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .service {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .service i {
+            font-size: 40px;
+            color: #ff5e62;
+        }
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff5e62;
+        }
+        .book-btn {
+            background: #ff5e62;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .book-btn:hover {
+            background: #ff3b3f;
+        }
+        .chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff5e62;
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .chat-window {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Hotel Dashboard</h2>
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="booking.html">Booking</a>
+        <a href="services.html">Services</a>
+    </div>
+    <div class="main-content">
+        <h1>Welcome to Our Hotel</h1>
+        <div class="services-container">
+            <div class="service">
+                <i class="fas fa-spa"></i>
+                <h3>Spa & Wellness</h3>
+                <p>Relax with our luxurious spa treatments.</p>
+                <p class="price" id="spa-price">$50</p>
+                <button class="book-btn" onclick="bookService('Spa', 50)">Book Now</button>
+            </div>
+            <div class="service">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Gym & Fitness</h3>
+                <p>Stay fit with our modern gym.</p>
+                <p class="price" id="gym-price">$30</p>
+                <button class="book-btn" onclick="bookService('Gym', 30)">Book Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot" onclick="toggleChat()">🤖</div>
+    <div class="chat-window" id="chat-window">
+        <p><strong>Robot:</strong> Hello! How can I assist you?</p>
+        <input type="text" id="chat-input" placeholder="Type your question..." onkeypress="handleChat(event)">
+    </div>
+
+    <script>
+        function bookService(service, price) {
+            window.location.href = `payment.html?service=${service}&price=${price}`;
+        }
+
+        function toggleChat() {
+            let chatWindow = document.getElementById('chat-window');
+            chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function handleChat(event) {
+            if (event.key === 'Enter') {
+                let userText = document.getElementById('chat-input').value;
+                let botReply = getBotReply(userText);
+                let chatWindow = document.getElementById('chat-window');
+                chatWindow.innerHTML += `<p><strong>You:</strong> ${userText}</p>`;
+                chatWindow.innerHTML += `<p><strong>Robot:</strong> ${botReply}</p>`;
+                document.getElementById('chat-input').value = '';
+                speak(botReply);
+            }
+        }
+
+        function getBotReply(text) {
+            let responses = {
+                "hello": "Hi there! How can I help you?",
+                "services": "We offer spa, gym, dining, and more!",
+                "rooms": "We have Single, Double, and Deluxe Suites available.",
+                "booking": "You can book a room or service online.",
+                "default": "I'm not sure, but I'll try to help!"
+            };
+            return responses[text.toLowerCase()] || responses["default"];
+        }
+
+        function speak(text) {
+            let speech = new SpeechSynthesisUtterance(text);
+            speech.lang = "en-US";
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+</body>
+</html>
